@@ -8,11 +8,6 @@ import { registerInputs, loginInputs } from "../constants";
 import AuthBackground from "../images/auth-background.jpg";
 
 export default RegisterScreen = ({ isLoginScreen, setIsLoginScreen }) => {
-  //   const [formState, setFormState] = useState({
-  //     name: "",
-  //     email: "",
-  //     password: "",
-  //   });
   return (
     <ImageBackground source={AuthBackground} style={styles.background}>
       <View

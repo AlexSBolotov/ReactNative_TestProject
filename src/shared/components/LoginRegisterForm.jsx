@@ -12,6 +12,7 @@ import LoginRegisterSwitcher from "./LoginRegisterSwitcher";
 import Button from "./Button";
 import ScreenTitle from "./ScreenTitle";
 import AvatarInput from "./AvatarInput";
+import { loginInitialState, registerInitialState } from "../../constants";
 
 export default LoginRegisterForm = ({
   titleText,
@@ -23,6 +24,17 @@ export default LoginRegisterForm = ({
   setIsLoginScreen,
 }) => {
   const [showPass, setShowPass] = useState(false);
+  const [registerState, setRegisterState] = useState(registerInitialState);
+  const [loginState, setLoginState] = useState(loginInitialState);
+
+  const handleLoginSubmit = () => {
+    console.log(loginState);
+    setLoginState(loginInitialState);
+  };
+  const handleRegisterSubmit = () => {
+    console.log(registerState);
+    setRegisterState(registerInitialState);
+  };
   return (
     <>
       {!isLoginScreen && <AvatarInput isLoginScreen={isLoginScreen} />}
@@ -37,18 +49,24 @@ export default LoginRegisterForm = ({
               key={el.id}
               placeholder={el.placeholder}
               name={el.name}
-              //   value={formState[el.name]}
+              value={
+                // loginState[el.name]
+                isLoginScreen ? loginState[el.name] : registerState[el.name]
+              }
               secureTextEntry={
                 el.placeholder === "Пароль" && showPass === false ? true : false
               }
-              //   onChangeText={(text) => {
-              //     console.log(text);
-              //     const field = el.name;
-              //     setFormState((prevState) => ({
-              //       ...prevState,
-              //       [field]: text,
-              //     }));
-              //   }}
+              onChangeText={(value) => {
+                isLoginScreen
+                  ? setLoginState((prevState) => ({
+                      ...prevState,
+                      [el.name]: value,
+                    }))
+                  : setRegisterState((prevState) => ({
+                      ...prevState,
+                      [el.name]: value,
+                    }));
+              }}
             />
           ))}
           <Pressable
@@ -66,7 +84,12 @@ export default LoginRegisterForm = ({
               </Text>
             )}
           </Pressable>
-          <Button buttonText={buttonText} />
+          <Button
+            buttonText={buttonText}
+            onPress={() => {
+              isLoginScreen ? handleLoginSubmit() : handleRegisterSubmit();
+            }}
+          />
           <LoginRegisterSwitcher
             switcherText={switcherText}
             switcherLinkText={switcherLinkText}
