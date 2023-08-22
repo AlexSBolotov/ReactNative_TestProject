@@ -3,9 +3,10 @@ import { TextInput } from "react-native";
 
 export default BasicInput = ({
   name,
+  value,
   placeholder = "",
   secureTextEntry = false,
-  // onChangeText,
+  onChangeText,
 }) => {
   const [isTextInputFocused, setTextInputFocused] = useState(false);
   return (
@@ -25,7 +26,10 @@ export default BasicInput = ({
         fontFamily: "Roboto-Regular",
         fontStyle: "normal",
       }}
+      name={name}
+      value={value}
       placeholder={placeholder}
+      onChangeText={onChangeText}
       placeholderTextColor={"#BDBDBD"}
       selectionColor={"#BDBDBD"}
       secureTextEntry={secureTextEntry}

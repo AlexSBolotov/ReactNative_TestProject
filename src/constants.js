@@ -7,5 +7,14 @@ const loginInputs = [
   { id: 1, name: "email", placeholder: "Адреса електронної пошти" },
   { id: 2, name: "password", placeholder: "Пароль" },
 ];
+const loginInitialState = {
+  email: "",
+  password: "",
+};
+const registerInitialState = {
+  name: "",
+  email: "",
+  password: "",
+};
 
-export { registerInputs, loginInputs };
+export { registerInputs, loginInputs, loginInitialState, registerInitialState };
