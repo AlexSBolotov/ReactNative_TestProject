@@ -1,13 +1,15 @@
 import { useFonts } from "expo-font";
-import {
-  StyleSheet,
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import AuthScreen from "./src/components/AuthScreen";
-import { useState } from "react";
+import AuthScreen from "./src/screens/AuthScreen";
+import PostsScreen from "./src/screens/PostsScreen";
+import LogOutButton from "./src/components/LogOutButton";
+import CreatePostsScreen from "./src/screens/CreatePostsScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
+import Home from "./src/screens/Home";
 
 export default App = () => {
   const [fontsLoaded] = useFonts({
@@ -15,30 +17,44 @@ export default App = () => {
     "Roboto-Medium": require("./src/shared/fonts/Roboto/Roboto-Medium.ttf"),
     "Roboto-Bold": require("./src/shared/fonts/Roboto/Roboto-Bold.ttf"),
   });
-  const [isLoginScreen, setIsLoginScreen] = useState(false);
   if (!fontsLoaded) {
     return null;
   }
-
+  const MainStack = createStackNavigator();
+  const BottomTab = createBottomTabNavigator();
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        Keyboard.dismiss();
-      }}
-    >
-      <View style={styles.container}>
-        <AuthScreen
-          isLoginScreen={isLoginScreen}
-          setIsLoginScreen={setIsLoginScreen}
+    <NavigationContainer>
+      {/* <BottomTab.Navigator>
+        <BottomTab.Screen name="Posts" component={PostsScreen} />
+        <BottomTab.Screen name="Create" component={CreatePostsScreen} />
+        <BottomTab.Screen name="Profile" component={ProfileScreen} />
+      </BottomTab.Navigator> */}
+      <MainStack.Navigator initialRouteName="Authentication">
+        <MainStack.Screen
+          name="Authentication"
+          component={AuthScreen}
+          options={{ headerShown: false }}
         />
-      </View>
-    </TouchableWithoutFeedback>
+        <MainStack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+
+          // options={{
+          //   title: "Публікації",
+          //   headerTitleAlign: "center",
+          //   headerTitleStyle: {
+          //     fontFamily: "Roboto-Medium",
+          //     fontSize: 17,
+          //     fontWeight: 500,
+          //     color: "#212121",
+          //   },
+          //   headerLeft: () => <></>,
+          //   headerBackVisible: false,
+          //   headerRight: () => <LogOutButton />,
+          // }}
+        />
+      </MainStack.Navigator>
+    </NavigationContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-});

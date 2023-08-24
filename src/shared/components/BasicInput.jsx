@@ -35,7 +35,6 @@ export default BasicInput = ({
       secureTextEntry={secureTextEntry}
       onFocus={() => setTextInputFocused(true)}
       onBlur={() => setTextInputFocused(false)}
-      //   onChangeText={() => onChangeText()}
     />
   );
 };

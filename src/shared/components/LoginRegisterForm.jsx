@@ -7,6 +7,8 @@ import {
   StyleSheet,
   Text,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 import BasicInput from "./BasicInput";
 import LoginRegisterSwitcher from "./LoginRegisterSwitcher";
 import Button from "./Button";
@@ -22,17 +24,27 @@ export default LoginRegisterForm = ({
   switcherLinkText,
   isLoginScreen,
   setIsLoginScreen,
+  navigation,
 }) => {
   const [showPass, setShowPass] = useState(false);
   const [registerState, setRegisterState] = useState(registerInitialState);
   const [loginState, setLoginState] = useState(loginInitialState);
+  // const navigation = useNavigation();
 
   const handleLoginSubmit = () => {
     console.log(loginState);
+    navigation.navigate("Home", {
+      userName: "User",
+      userEmail: loginState.email,
+    });
     setLoginState(loginInitialState);
   };
   const handleRegisterSubmit = () => {
     console.log(registerState);
+    navigation.navigate("Home", {
+      userName: registerState.name,
+      userEmail: registerState.email,
+    });
     setRegisterState(registerInitialState);
   };
   return (
@@ -50,7 +62,6 @@ export default LoginRegisterForm = ({
               placeholder={el.placeholder}
               name={el.name}
               value={
-                // loginState[el.name]
                 isLoginScreen ? loginState[el.name] : registerState[el.name]
               }
               secureTextEntry={
