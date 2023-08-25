@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
+// import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import PostsScreen from "./PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
@@ -9,64 +10,77 @@ import LogOutButton from "../components/LogOutButton";
 import GoBackButton from "../components/GoBackButton";
 import Boxes from "../images/svg/boxes.svg";
 import UserIcon from "../images/svg/user-inactive.svg";
+import PlusBlackIcon from "../images/svg/plus-black.svg";
+
 import AddPost from "../components/AddPost";
 import DeletePost from "../components/DeletePost";
 import UserActive from "../components/UserActive";
 
-export default Home = ({ navigation, route }) => {
+export default Home = ({ state, navigation, route }) => {
   const BottomTab = createBottomTabNavigator();
   const { userName = "User", userEmail = "user@mail.com" } = route.params;
-
+  console.log(route.name);
   function MyTabBar({ state, descriptors, navigation }) {
-    // const shouldDisplay = (label, isFocused) => {
-    //   if (label === "Posts" && isFocused) return false;
-    //   else
-    //     if (label === "Create" && isFocused) return false;
-    //     else
-    //       if (label === "Profile" && isFocused) return false;
-    //   else return true;
-    // };
+    const shouldDisplay = (label, isFocused) => {
+      // if (label === "Posts" && isFocused) return false;
+      // else
+      if (label === "Create" && isFocused) return false;
+      // else
+      //   if (label === "Profile" && isFocused) return false;
+      else return true;
+    };
+    console.log(state.index);
+    // let routesToMap;
+    if (state.index === 0) {
+      routesToMap = ["Posts", "Create", "Profile"];
+    } else {
+      routesToMap = ["Posts", "Profile", "Create"];
+    }
+    if (state.index === 1) {
+      return null;
+    }
     return (
       <View style={styles.tabWrapper}>
-        {state.routes.map((route, index) => {
-          const isFocused = state.index === index;
+        {routesToMap.map((name, index) => {
+          // const isFocused = state.index === index;
           // if (!shouldDisplay(route.name, isFocused)) return null;
+          // console.log(isFocused);
 
           const onPress = () => {
-            const event = navigation.emit({
-              type: "tabPress",
-              target: route.key,
-              canPreventDefault: true,
-            });
+            // const event = navigation.emit({
+            //   type: "tabPress",
+            //   target: route.key,
+            //   canPreventDefault: true,
+            // });
 
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate({ name: route.name, merge: true });
-            }
+            // if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate({ name: name, merge: true });
+            // }
           };
 
-          if (route.name === "Posts") {
+          if (name === "Posts") {
             return (
-              <TouchableOpacity key={route.key} onPress={onPress}>
+              <TouchableOpacity key={index} onPress={onPress}>
                 <Boxes width={24} heigth={24} />
               </TouchableOpacity>
             );
-          } else if (route.name === "Create") {
-            return isFocused ? (
-              <TouchableOpacity key={route.key} onPress={onPress}>
-                <DeletePost />
+          } else if (name === "Create") {
+            return routesToMap[1] === "Profile" ? (
+              <TouchableOpacity key={index} onPress={onPress}>
+                <PlusBlackIcon />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity key={route.key} onPress={onPress}>
+              <TouchableOpacity key={index} onPress={onPress}>
                 <AddPost />
               </TouchableOpacity>
             );
-          } else if (route.name === "Profile") {
-            return isFocused ? (
-              <TouchableOpacity key={route.key} onPress={onPress}>
+          } else if (name === "Profile") {
+            return routesToMap[1] === "Profile" ? (
+              <TouchableOpacity key={index} onPress={onPress}>
                 <UserActive />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity key={route.key} onPress={onPress}>
+              <TouchableOpacity key={index} onPress={onPress}>
                 <UserIcon width={24} heigth={24} />
               </TouchableOpacity>
             );
@@ -77,20 +91,7 @@ export default Home = ({ navigation, route }) => {
   }
 
   return (
-    <BottomTab.Navigator
-      // screenOptions={({ route }) => ({
-      //   tabBarShowLabel: false,
-      //   tabBarIcon: ({ focused, color, size }) => {
-      //     if (route.name === "Posts") {
-      //       return focused ? <Boxes /> : <Boxes />;
-      //     } else if (route.name === "Create") {
-      //       return focused ? <Boxes /> : <Boxes />;
-      //     }
-      //   },
-      // })}
-      // screenOptions={{ tabBarShowLabel: false }}
-      tabBar={(props) => <MyTabBar {...props} />}
-    >
+    <BottomTab.Navigator tabBar={(props) => <MyTabBar {...props} />}>
       <BottomTab.Screen
         name="Posts"
         options={{
@@ -105,7 +106,6 @@ export default Home = ({ navigation, route }) => {
           headerLeft: () => <></>,
           headerBackVisible: false,
           headerRight: () => <LogOutButton />,
-          // tabBarShowLabel: false,
         }}
         children={() => (
           <PostsScreen userName={userName} userEmail={userEmail} />
@@ -114,7 +114,7 @@ export default Home = ({ navigation, route }) => {
       <BottomTab.Screen
         name="Create"
         component={CreatePostsScreen}
-        options={{
+        options={() => ({
           title: "Створити публікацію",
           headerTitleAlign: "center",
           headerTitleStyle: {
@@ -124,8 +124,11 @@ export default Home = ({ navigation, route }) => {
             color: "#212121",
           },
           headerLeft: () => <GoBackButton navigation={navigation} />,
-          // tabBarShowLabel: false,
-        }}
+          tabBarStyle: {
+            display: "none",
+          },
+          tabBarButton: () => null,
+        })}
       />
       <BottomTab.Screen
         name="Profile"

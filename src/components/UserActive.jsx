@@ -13,7 +13,7 @@ export default UserActive = () => {
         height: 40,
       }}
     >
-      <UserActiveIcon width={13} heigth={13} color={"#FFFFFF"} />
+      <UserActiveIcon width={24} heigth={24} color={"#FFFFFF"} />
     </View>
   );
 };
