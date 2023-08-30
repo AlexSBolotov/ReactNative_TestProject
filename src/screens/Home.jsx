@@ -1,7 +1,5 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import PostsScreen from "./PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
@@ -11,26 +9,14 @@ import GoBackButton from "../components/GoBackButton";
 import Boxes from "../images/svg/boxes.svg";
 import UserIcon from "../images/svg/user-inactive.svg";
 import PlusBlackIcon from "../images/svg/plus-black.svg";
-
 import AddPost from "../components/AddPost";
-import DeletePost from "../components/DeletePost";
 import UserActive from "../components/UserActive";
 
 export default Home = ({ state, navigation, route }) => {
   const BottomTab = createBottomTabNavigator();
-  const { userName = "User", userEmail = "user@mail.com" } = route.params;
-  console.log(route.name);
+  // const { userName = "User", userEmail = "user@mail.com" } = route.params;
+  // console.log("route.params from Home ---->", route.params);
   function MyTabBar({ state, descriptors, navigation }) {
-    const shouldDisplay = (label, isFocused) => {
-      // if (label === "Posts" && isFocused) return false;
-      // else
-      if (label === "Create" && isFocused) return false;
-      // else
-      //   if (label === "Profile" && isFocused) return false;
-      else return true;
-    };
-    console.log(state.index);
-    // let routesToMap;
     if (state.index === 0) {
       routesToMap = ["Posts", "Create", "Profile"];
     } else {
@@ -42,20 +28,8 @@ export default Home = ({ state, navigation, route }) => {
     return (
       <View style={styles.tabWrapper}>
         {routesToMap.map((name, index) => {
-          // const isFocused = state.index === index;
-          // if (!shouldDisplay(route.name, isFocused)) return null;
-          // console.log(isFocused);
-
           const onPress = () => {
-            // const event = navigation.emit({
-            //   type: "tabPress",
-            //   target: route.key,
-            //   canPreventDefault: true,
-            // });
-
-            // if (!isFocused && !event.defaultPrevented) {
             navigation.navigate({ name: name, merge: true });
-            // }
           };
 
           if (name === "Posts") {
@@ -94,6 +68,7 @@ export default Home = ({ state, navigation, route }) => {
     <BottomTab.Navigator tabBar={(props) => <MyTabBar {...props} />}>
       <BottomTab.Screen
         name="Posts"
+        component={PostsScreen}
         options={{
           title: "Публікації",
           headerTitleAlign: "center",
@@ -103,13 +78,19 @@ export default Home = ({ state, navigation, route }) => {
             fontWeight: 500,
             color: "#212121",
           },
+
           headerLeft: () => <></>,
           headerBackVisible: false,
           headerRight: () => <LogOutButton />,
         }}
-        children={() => (
-          <PostsScreen userName={userName} userEmail={userEmail} />
-        )}
+        // children={() => (
+        //   <PostsScreen
+        //     navigation={navigation}
+        //     route={route}
+        //     userName={userName}
+        //     userEmail={userEmail}
+        //   />
+        // )}
       />
       <BottomTab.Screen
         name="Create"
@@ -132,10 +113,14 @@ export default Home = ({ state, navigation, route }) => {
       />
       <BottomTab.Screen
         name="Profile"
-        // component={ProfileScreen}
-        children={() => (
-          <ProfileScreen userName={userName} userEmail={userEmail} />
-        )}
+        component={ProfileScreen}
+        // children={() => (
+        //   <ProfileScreen
+        //     route={route}
+        //     userName={userName}
+        //     userEmail={userEmail}
+        //   />
+        // )}
         options={{
           headerShown: false,
           // tabBarShowLabel: false,
