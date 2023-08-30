@@ -1,9 +1,17 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, FlatList } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import AvatarImg from "../images/motivation_00.jpg";
+import { useEffect, useState } from "react";
 
-export default PostsScreen = ({ navigation, route, userName, userEmail }) => {
+export default PostsScreen = ({ navigation, route }) => {
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    if (route.params) {
+      setPosts((prevState) => [...prevState, route.params]);
+    }
+  }, [route.params]);
+  console.log("posts---->", posts);
   return (
     <View style={styles.container}>
       <View style={styles.userWrapper}>
@@ -11,10 +19,22 @@ export default PostsScreen = ({ navigation, route, userName, userEmail }) => {
           <Image source={AvatarImg} style={styles.image} />
         </View>
         <View>
-          <Text style={styles.userName}>{userName}</Text>
-          <Text style={styles.userEmail}>{userEmail}</Text>
+          <Text style={styles.userName}>userName</Text>
+          <Text style={styles.userEmail}>userEmail</Text>
         </View>
       </View>
+      <FlatList
+        data={posts}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <View>
+            <Image
+              source={{ uri: item.photo }}
+              style={{ width: 300, height: 200, marginBottom: 10 }}
+            />
+          </View>
+        )}
+      />
     </View>
   );
 };

@@ -41,10 +41,13 @@ export default LoginRegisterForm = ({
   };
   const handleRegisterSubmit = () => {
     console.log(registerState);
-    navigation.navigate("Home", {
-      userName: registerState.name,
-      userEmail: registerState.email,
-    });
+    navigation.navigate(
+      "Home"
+      // , {
+      // userName: registerState.name,
+      // userEmail: registerState.email,
+      // }
+    );
     setRegisterState(registerInitialState);
   };
   return (

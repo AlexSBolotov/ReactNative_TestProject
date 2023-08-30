@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import AuthBackground from "../images/auth-background.jpg";
 
-export default ProfileScreen = ({ userName, userEmail }) => {
+export default ProfileScreen = ({}) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => {
@@ -18,7 +18,7 @@ export default ProfileScreen = ({ userName, userEmail }) => {
       <View style={styles.container}>
         <ImageBackground source={AuthBackground} style={styles.background}>
           <View style={styles.formWrapper}>
-            <Text>{userName}</Text>
+            <Text>userName</Text>
           </View>
         </ImageBackground>
       </View>

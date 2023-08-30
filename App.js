@@ -11,7 +11,7 @@ import CreatePostsScreen from "./src/screens/CreatePostsScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import Home from "./src/screens/Home";
 
-export default App = () => {
+export default App = ({ navigation, route }) => {
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("./src/shared/fonts/Roboto/Roboto-Regular.ttf"),
     "Roboto-Medium": require("./src/shared/fonts/Roboto/Roboto-Medium.ttf"),
@@ -39,20 +39,6 @@ export default App = () => {
           name="Home"
           component={Home}
           options={{ headerShown: false }}
-
-          // options={{
-          //   title: "Публікації",
-          //   headerTitleAlign: "center",
-          //   headerTitleStyle: {
-          //     fontFamily: "Roboto-Medium",
-          //     fontSize: 17,
-          //     fontWeight: 500,
-          //     color: "#212121",
-          //   },
-          //   headerLeft: () => <></>,
-          //   headerBackVisible: false,
-          //   headerRight: () => <LogOutButton />,
-          // }}
         />
       </MainStack.Navigator>
     </NavigationContainer>
